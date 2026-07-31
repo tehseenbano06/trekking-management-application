@@ -1,6 +1,6 @@
 # Trekking Management Application
 
-A web-based Trekking Management Application developed as part of the Modern Application Development I (MAD-I) course.
+A web-based Trekking Management Application developed.
 
 ## Tech Stack
 
