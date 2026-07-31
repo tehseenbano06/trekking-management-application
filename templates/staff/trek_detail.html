@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}{{ trek.name }}{% endblock %}
+{% block content %}
+<a href="{{ url_for('staff.dashboard') }}">&larr; Back to dashboard</a>
+<h3 class="mt-2 mb-3">{{ trek.name }}</h3>
+
+<div class="card p-3 mb-4">
+    <p>Location: {{ trek.location }} | Difficulty: {{ trek.difficulty }} | Duration: {{ trek.duration_days }} days</p>
+    <form method="POST" action="{{ url_for('staff.update_trek', trek_id=trek.id) }}" class="row g-2 align-items-end">
+        <div class="col-md-3">
+            <label class="form-label">Status</label>
+            <select name="status" class="form-select">
+                {% for st in ["Approved", "Open", "Closed", "Completed"] %}
+                <option value="{{ st }}" {% if trek.status == st %}selected{% endif %}>{{ st }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Available Slots</label>
+            <input type="number" name="available_slots" class="form-control" value="{{ trek.available_slots }}" min="0">
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-dark">Update</button>
+        </div>
+    </form>
+</div>
+
+<h5>Registered Trekkers ({{ bookings|length }})</h5>
+<table class="table table-bordered bg-white">
+    <thead><tr><th>Booking ID</th><th>Name</th><th>Email</th><th>Booking Date</th></tr></thead>
+    <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.user.name }}</td>
+            <td>{{ b.user.email }}</td>
+            <td>{{ b.booking_date.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

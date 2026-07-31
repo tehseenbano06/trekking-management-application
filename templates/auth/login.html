@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Login{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-5">
+        <div class="card p-4">
+            <h3 class="mb-3">Login</h3>
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <button type="submit" class="btn btn-dark w-100">Login</button>
+            </form>
+            <hr>
+            <p class="mb-1">New Trekker? <a href="{{ url_for('auth.register_trekker') }}">Register here</a></p>
+            <p class="mb-0">Want to join as Trek Staff? <a href="{{ url_for('auth.register_staff') }}">Register here</a></p>
+        </div>
+    </div>
+</div>
+{% endblock %}

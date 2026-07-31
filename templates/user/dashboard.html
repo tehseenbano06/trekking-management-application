@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}My Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-3">My Dashboard</h3>
+
+<div class="d-flex gap-2 mb-4">
+    <a href="{{ url_for('user.browse_treks') }}" class="btn btn-dark">Browse Treks</a>
+    <a href="{{ url_for('user.history') }}" class="btn btn-outline-dark">Booking History</a>
+    <a href="{{ url_for('user.profile') }}" class="btn btn-outline-dark">Edit Profile</a>
+</div>
+
+<h5>Currently Booked Treks</h5>
+{% if not bookings %}
+<p class="text-muted">You have no active bookings.</p>
+{% endif %}
+<div class="row g-3">
+    {% for b in bookings %}
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>{{ b.trek.name }}</h5>
+            <p class="mb-1 text-muted">{{ b.trek.location }} • {{ b.trek.difficulty }}</p>
+            <p class="mb-1">Trek Status: {{ b.trek.status }}</p>
+            <p class="mb-2">Booking Status: <strong>{{ b.booking_status }}</strong></p>
+            <form method="POST" action="{{ url_for('user.cancel_booking', booking_id=b.id) }}"
+                  onsubmit="return confirm('Cancel this booking?');">
+                <button class="btn btn-sm btn-outline-danger">Cancel Booking</button>
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

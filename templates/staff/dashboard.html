@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Staff Dashboard{% endblock %}
+{% block content %}
+<h3 class="mb-3">My Assigned Treks</h3>
+
+{% if not treks %}
+<p class="text-muted">No treks assigned to you yet.</p>
+{% endif %}
+
+<div class="row g-3">
+    {% for trek in treks %}
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>{{ trek.name }}</h5>
+            <p class="mb-1 text-muted">{{ trek.location }} • {{ trek.difficulty }} • {{ trek.duration_days }} days</p>
+            <p class="mb-1">Status: <strong>{{ trek.status }}</strong></p>
+            <p class="mb-1">Slots: {{ trek.available_slots }} / {{ trek.total_slots }}</p>
+            <p class="mb-2">Registered Trekkers: {{ trek_counts.get(trek.id, 0) }}</p>
+            <a href="{{ url_for('staff.trek_detail', trek_id=trek.id) }}" class="btn btn-dark btn-sm">Manage</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

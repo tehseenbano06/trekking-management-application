@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}Manage Treks{% endblock %}
+{% block content %}
+<h3 class="mb-3">Manage Treks</h3>
+
+<form method="GET" class="row g-2 mb-3">
+    <div class="col-md-4">
+        <input type="text" name="q" value="{{ q }}" class="form-control" placeholder="Search trek by name">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-secondary w-100">Search</button>
+    </div>
+</form>
+
+<div class="card p-3 mb-4">
+    <h5>Create New Trek</h5>
+    <form method="POST" action="{{ url_for('admin.create_trek') }}" class="row g-2">
+        <div class="col-md-3"><input name="name" class="form-control" placeholder="Trek Name" required></div>
+        <div class="col-md-2"><input name="location" class="form-control" placeholder="Location" required></div>
+        <div class="col-md-2">
+            <select name="difficulty" class="form-select">
+                <option>Easy</option>
+                <option>Moderate</option>
+                <option>Hard</option>
+            </select>
+        </div>
+        <div class="col-md-1"><input type="number" name="duration_days" class="form-control" placeholder="Days" min="1" required></div>
+        <div class="col-md-1"><input type="number" name="total_slots" class="form-control" placeholder="Slots" min="1" required></div>
+        <div class="col-md-1"><input type="date" name="start_date" class="form-control"></div>
+        <div class="col-md-1"><input type="date" name="end_date" class="form-control"></div>
+        <div class="col-md-1"><button class="btn btn-dark w-100">Add</button></div>
+    </form>
+</div>
+
+<table class="table table-bordered bg-white">
+    <thead>
+        <tr>
+            <th>ID</th><th>Name</th><th>Location</th><th>Difficulty</th>
+            <th>Slots (avail/total)</th><th>Status</th><th>Assigned Staff</th><th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for trek in treks %}
+        <tr>
+            <td>{{ trek.id }}</td>
+            <td>{{ trek.name }}</td>
+            <td>{{ trek.location }}</td>
+            <td>{{ trek.difficulty }}</td>
+            <td>{{ trek.available_slots }} / {{ trek.total_slots }}</td>
+            <td>{{ trek.status }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('admin.assign_staff', trek_id=trek.id) }}" class="d-flex gap-1">
+                    <select name="staff_id" class="form-select form-select-sm">
+                        <option value="">-- none --</option>
+                        {% for s in staff_list %}
+                        <option value="{{ s.id }}" {% if trek.staff_id == s.id %}selected{% endif %}>
+                            {{ s.user.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-sm btn-outline-dark">Assign</button>
+                </form>
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('admin.edit_trek', trek_id=trek.id) }}" class="d-flex gap-1 mb-1">
+                    <input type="hidden" name="name" value="{{ trek.name }}">
+                    <input type="hidden" name="location" value="{{ trek.location }}">
+                    <input type="hidden" name="difficulty" value="{{ trek.difficulty }}">
+                    <input type="hidden" name="duration_days" value="{{ trek.duration_days }}">
+                    <input type="hidden" name="total_slots" value="{{ trek.total_slots }}">
+                    <select name="status" class="form-select form-select-sm">
+                        {% for st in ["Pending","Approved","Open","Closed","Completed"] %}
+                        <option value="{{ st }}" {% if trek.status == st %}selected{% endif %}>{{ st }}</option>
+                        {% endfor %}
+                    </select>
+                    <button class="btn btn-sm btn-outline-primary">Update</button>
+                </form>
+                <form method="POST" action="{{ url_for('admin.delete_trek', trek_id=trek.id) }}"
+                      onsubmit="return confirm('Delete this trek?');">
+                    <button class="btn btn-sm btn-outline-danger">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

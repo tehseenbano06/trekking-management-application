@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}Browse Treks{% endblock %}
+{% block content %}
+<h3 class="mb-3">Available Treks</h3>
+
+<form method="GET" class="row g-2 mb-4">
+    <div class="col-md-3">
+        <select name="difficulty" class="form-select">
+            <option value="">All Difficulties</option>
+            {% for d in ["Easy","Moderate","Hard"] %}
+            <option value="{{ d }}" {% if difficulty == d %}selected{% endif %}>{{ d }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-3">
+        <input type="text" name="location" value="{{ location }}" class="form-control" placeholder="Location">
+    </div>
+    <div class="col-md-2">
+        <button class="btn btn-secondary w-100">Filter</button>
+    </div>
+</form>
+
+{% if not treks %}
+<p class="text-muted">No open treks match your search right now.</p>
+{% endif %}
+
+<div class="row g-3">
+    {% for trek in treks %}
+    <div class="col-md-4">
+        <div class="card p-3">
+            <h5>{{ trek.name }}</h5>
+            <p class="mb-1 text-muted">{{ trek.location }} • {{ trek.difficulty }} • {{ trek.duration_days }} days</p>
+            <p class="mb-2">Slots left: {{ trek.available_slots }} / {{ trek.total_slots }}</p>
+            {% if trek.id in already_booked_ids %}
+                <button class="btn btn-sm btn-secondary" disabled>Already Booked</button>
+            {% elif trek.available_slots <= 0 %}
+                <button class="btn btn-sm btn-secondary" disabled>Full</button>
+            {% else %}
+                <form method="POST" action="{{ url_for('user.book_trek', trek_id=trek.id) }}">
+                    <button class="btn btn-sm btn-dark">Book Trek</button>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

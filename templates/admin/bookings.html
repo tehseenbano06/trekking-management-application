@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}All Bookings{% endblock %}
+{% block content %}
+<h3 class="mb-3">All Bookings</h3>
+
+<table class="table table-bordered bg-white">
+    <thead>
+        <tr><th>Booking ID</th><th>Trekker</th><th>Trek</th><th>Status</th><th>Booking Date</th></tr>
+    </thead>
+    <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.id }}</td>
+            <td>{{ b.user.name }}</td>
+            <td>{{ b.trek.name }}</td>
+            <td>{{ b.booking_status }}</td>
+            <td>{{ b.booking_date.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

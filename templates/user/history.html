@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Booking History{% endblock %}
+{% block content %}
+<h3 class="mb-3">My Trekking History</h3>
+
+<table class="table table-bordered bg-white">
+    <thead><tr><th>Trek</th><th>Location</th><th>Status</th><th>Booking Date</th></tr></thead>
+    <tbody>
+        {% for b in bookings %}
+        <tr>
+            <td>{{ b.trek.name }}</td>
+            <td>{{ b.trek.location }}</td>
+            <td>{{ b.booking_status }}</td>
+            <td>{{ b.booking_date.strftime('%Y-%m-%d %H:%M') }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
