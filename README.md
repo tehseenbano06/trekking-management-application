@@ -17,7 +17,7 @@ A web-based Trekking Management Application developed as part of the Modern Appl
 - Trek Staff
 - Trekker (User)
 
-## Database Schema (Milestone 1)
+## Database Schema
 
 4 tables implemented using SQLAlchemy models:
 - **User** — Admin / Trek Staff / Trekker, told apart by a `role` column
