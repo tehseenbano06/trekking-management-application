@@ -1,0 +1,15 @@
+body {
+    background-color: #f7f7f5;
+}
+
+.navbar-brand {
+    font-weight: 600;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.stat-card h2 {
+    font-weight: 700;
+}
